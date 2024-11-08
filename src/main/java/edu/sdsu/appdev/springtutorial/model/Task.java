@@ -1,7 +1,6 @@
 package edu.sdsu.appdev.springtutorial.model;
 
-import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,29 +10,34 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Task implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
+public class Task {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
+	private String name;
 	private String description;
+	private LocalDateTime time; // Adjust type as needed
 
-	private String date;
+	@ManyToOne // Define the many-to-one relationship to Users
+	@JoinColumn(name = "user_id", nullable = false) // Foreign key column in the Task table
+	private Users users; // Ensure this attribute name matches your query method
 
-	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = false)
-	private Users user;
-
-	// Getters and setters
-	public Long getId() {
+	// Getters and Setters
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getDescription() {
@@ -44,20 +48,19 @@ public class Task implements Serializable {
 		this.description = description;
 	}
 
-	public String getDate() {
-		return date;
+	public LocalDateTime getTime() {
+		return time;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setTime(LocalDateTime time) {
+		this.time = time;
 	}
 
-	public Users getUsers() {
-		return user;
+	public Users getUser() {
+		return users;
 	}
 
-	public void setUsers(Users user) {
-		this.user = user;
+	public void setUser(Users user) {
+		this.users = user;
 	}
-
 }

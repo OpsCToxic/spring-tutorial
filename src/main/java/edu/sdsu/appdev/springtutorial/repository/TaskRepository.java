@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends CrudRepository<Task, Integer> {
 	// List<Task> findByUserAndDate(CalendarPeeps user, LocalDate date);
+	List<Task> findByUsers(Users user);
 }

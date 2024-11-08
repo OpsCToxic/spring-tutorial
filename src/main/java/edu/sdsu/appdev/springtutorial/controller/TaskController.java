@@ -9,6 +9,9 @@ import edu.sdsu.appdev.springtutorial.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
@@ -33,9 +36,23 @@ public class TaskController {
 		}
 
 		Users user = userService.findById(userId);
-		task.setUsers(user); // Set the user as a foreign key in the task
+		task.setUser(user); // Set the user as a foreign key in the task
 		taskRepository.save(task);
 
 		return ResponseEntity.ok("Task created successfully");
+	}
+
+	@GetMapping("/user-tasks")
+	public ResponseEntity<?> getUserTasks(HttpSession session) {
+		Integer userId = (Integer) session.getAttribute("userId");
+
+		if (userId == null) {
+			return ResponseEntity.status(401).body("User not logged in");
+		}
+
+		Users user = userService.findById(userId);
+		List<Task> tasks = taskRepository.findByUsers(user); // Assuming `findByUsers` is defined in TaskRepository
+
+		return ResponseEntity.ok(tasks);
 	}
 }
